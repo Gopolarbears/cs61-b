@@ -4,7 +4,7 @@ public class Planet{
     public double xxVel;
     public double yyVel;
     public double mass;
-    private String imgFileName;
+    public String imgFileName;
     private static final double G = 6.67e-11;
 
     public Planet(double xP, double yP, double xV,
@@ -81,9 +81,5 @@ public class Planet{
         String filename = "images/" + imgFileName;
         StdDraw.picture(xxPos, yyPos, filename);
         StdDraw.show();
-    }
-
-    public String get_filename(){
-        return imgFileName;
     }
 }

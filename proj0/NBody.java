@@ -61,7 +61,7 @@ public class NBody {
     for (int i = 0; i < all_Planets.length; i++) {
         StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
                     all_Planets[i].xxPos, all_Planets[i].yyPos, all_Planets[i].xxVel,
-                    all_Planets[i].yyVel, all_Planets[i].mass, all_Planets[i].get_filename());   
+                    all_Planets[i].yyVel, all_Planets[i].mass, all_Planets[i].imgFileName);   
         }   
     }
 }
