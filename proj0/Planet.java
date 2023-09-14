@@ -4,8 +4,8 @@ public class Planet{
     public double xxVel;
     public double yyVel;
     public double mass;
-    String imgFileName;
-    static final double G = 6.67e-11;
+    private String imgFileName;
+    private static final double G = 6.67e-11;
 
     public Planet(double xP, double yP, double xV,
     double yV, double m, String img){
@@ -81,5 +81,9 @@ public class Planet{
         String filename = "images/" + imgFileName;
         StdDraw.picture(xxPos, yyPos, filename);
         StdDraw.show();
+    }
+
+    public String get_filename(){
+        return imgFileName;
     }
 }
