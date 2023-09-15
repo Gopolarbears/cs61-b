@@ -130,6 +130,9 @@ public class IntList {
      * as an input, returns null.
      */
     public static IntList reverse(IntList A) {
+        if (A == null){
+            return A;
+        }
         IntList front = null;
         IntList remainOfFirst = A.rest;
         IntList nextToAdd = A;
