@@ -151,7 +151,7 @@ public class ArrayDeque<T> {
     public T get(int index) {
         int first = getFirst();
         int last = getLast();
-        index = (index + first) / length;
+        index = (index + first) % length;
         if (first < last) {
             if (first <= index && index <= last) {
                 return item[index];
