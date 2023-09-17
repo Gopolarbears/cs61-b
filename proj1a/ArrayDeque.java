@@ -22,7 +22,7 @@ public class ArrayDeque<T> {
         nextFirst = 7;
         for (T x: input) {
             item[index] = input[index];
-            index ++;
+            index++;
         }
 
         nextFirst = 3;
@@ -33,7 +33,9 @@ public class ArrayDeque<T> {
         int first;
         if (nextFirst == length - 1) {
             first = 0;
-        }else { first = nextFirst + 1;}
+        } else {
+            first = nextFirst + 1;
+        }
         return first;
     }
 
@@ -41,67 +43,69 @@ public class ArrayDeque<T> {
         int last;
         if (nextLast == 0) {
             last = length - 1;
-        }else { last = nextLast - 1;}
+        } else {
+            last = nextLast - 1;
+        }
         return last;
     }
 
-    public void upsize(){
-        T[] new_item = (T[]) new Object[2 * length];
+    public void upsize() {
+        T[] newItem = (T[]) new Object[2 * length];
         int first = getFirst();
         int last = getLast();
-        System.arraycopy(item, first, new_item, length / 2, length - first);
-        System.arraycopy(item, 0, new_item, length * 3 / 2 - first, first);
+        System.arraycopy(item, first, newItem, length / 2, length - first);
+        System.arraycopy(item, 0, newItem, length * 3 / 2 - first, first);
         nextFirst = length / 2 - 1;
-        nextLast = length * 3 / 2 ;
+        nextLast = length * 3 / 2;
         length *= 2;
-        item = new_item;
+        item = newItem;
     }
 
     public void downsize() {
-        T[] new_item = (T[]) new Object[length / 2];
+        T[] newItem = (T[]) new Object[length / 2];
         int first = getFirst();
         int last = getLast();
-        System.arraycopy(item, first, new_item, length / 8, length / 4);
+        System.arraycopy(item, first, newItem, length / 8, length / 4);
         nextFirst = length / 8 - 1;
         nextLast = length * 3 / 8 + 1;
         length /= 2;
-        item = new_item;
+        item = newItem;
     }
 
     public void addFirst(T newFirst) {
         if (size == length) {
             upsize();
             item[nextFirst] = newFirst;
-            nextFirst --;
-        }
-        else {
+            nextFirst--;
+        } else {
             item[nextFirst] = newFirst;
             if (nextFirst == 0) {
                 nextFirst = length - 1;
-            } else {nextFirst --;}
+            } else {
+                nextFirst--;
+            }
         }
-        size ++;
+        size++;
     }
 
     public void addLast(T newLast) {
         if (size == length) {
             upsize();
             item[nextLast] = newLast;
-            nextLast ++;
-        }
-        else {
+            nextLast++;
+        } else {
             item[nextLast] = newLast;
             if (nextLast == length - 1) {
                 nextLast = 0;
-            } else {nextLast ++;}
+            } else {
+                nextLast++;
+            }
         }
-        size ++;
+        size++;
     }
 
     public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        } else {return false;}
+        return (size == 0);
     }
 
     public int size() {
@@ -132,11 +136,11 @@ public class ArrayDeque<T> {
         if (useRatio == 0.25) {
             downsize();
         }
-        T return_value = item[first];
+        T returnValue = item[first];
         item[first] = null;
         nextFirst = first;
-        size --;
-        return return_value;
+        size--;
+        return returnValue;
     }
 
     public T removeLast() {
@@ -145,27 +149,28 @@ public class ArrayDeque<T> {
         if (useRatio == 0.25) {
             downsize();
         }
-        T return_value = item[last];
+        T returnValue = item[last];
         item[last] = null;
         nextLast = last;
-        size --;
-        return return_value;
+        size--;
+        return returnValue;
     }
 
     public T get(int index) {
         int first = getFirst();
         int last = getLast();
         if (first <= last) {
-            if (first <= index && index <= last){
+            if (first <= index && index <= last) {
                 return item[index];
-            } else {return null;}
-        }
-        else {
+            } else {
+                return null;
+            }
+        } else {
             if (index >= first || index <= last) {
                 return item[index];
-            } else {return null;}
+            } else {
+                return null;
+            }
         }
     }
-
-
 }
