@@ -117,7 +117,8 @@ public class ArrayDeque<T> {
     public T removeFirst() {
         int first = getFirst();
         double useRatio = (double) size / length;
-        if (useRatio == 0.25 && size >= 16) {
+        final int minChangeSize = 16;
+        if (useRatio == 0.25 && size >= minChangeSize) {
             downsize();
         }
         T returnValue = item[first];
@@ -130,7 +131,8 @@ public class ArrayDeque<T> {
     public T removeLast() {
         int last = getLast();
         double useRatio = (double) size / length;
-        if (useRatio == 0.25 && size >= 16) {
+        final int minChangeSize = 16;
+        if (useRatio == 0.25 && size >= minChangeSize) {
             downsize();
         }
         T returnValue = item[last];
@@ -156,12 +158,5 @@ public class ArrayDeque<T> {
                 return null;
             }
         }
-    }
-    public static void main(String args[]) {
-        ArrayDeque<Integer> testCase = new ArrayDeque<>();
-        boolean b = testCase.isEmpty();
-        testCase.addFirst(1);
-        testCase.addFirst(2);
-        int a = testCase.removeFirst();
     }
 }
