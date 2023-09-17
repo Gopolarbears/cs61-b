@@ -115,6 +115,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         int first = getFirst();
         double useRatio = (double) size / length;
         final int minChangeSize = 16;
@@ -129,6 +132,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         int last = getLast();
         double useRatio = (double) size / length;
         final int minChangeSize = 16;
@@ -145,6 +151,7 @@ public class ArrayDeque<T> {
     public T get(int index) {
         int first = getFirst();
         int last = getLast();
+        index = (index + first) / length;
         if (first < last) {
             if (first <= index && index <= last) {
                 return item[index];
