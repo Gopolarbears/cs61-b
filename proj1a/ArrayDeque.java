@@ -13,22 +13,6 @@ public class ArrayDeque<T> {
         nextLast = 4;
     }
 
-    public ArrayDeque(T[] input) {
-        int index = 0;
-        item = (T[]) new Object[8];
-        size = 8;
-        length = 8;
-        nextLast = 0;
-        nextFirst = 7;
-        for (T x: input) {
-            item[index] = input[index];
-            index++;
-        }
-
-        nextFirst = 3;
-        nextLast = 4;
-    }
-
     private int getFirst() {
         int first;
         if (nextFirst == length - 1) {
@@ -49,7 +33,7 @@ public class ArrayDeque<T> {
         return last;
     }
 
-    public void upsize() {
+    private void upsize() {
         T[] newItem = (T[]) new Object[2 * length];
         int first = getFirst();
         int last = getLast();
@@ -61,7 +45,7 @@ public class ArrayDeque<T> {
         item = newItem;
     }
 
-    public void downsize() {
+    private void downsize() {
         T[] newItem = (T[]) new Object[length / 2];
         int first = getFirst();
         int last = getLast();
@@ -159,7 +143,7 @@ public class ArrayDeque<T> {
     public T get(int index) {
         int first = getFirst();
         int last = getLast();
-        if (first <= last) {
+        if (first < last) {
             if (first <= index && index <= last) {
                 return item[index];
             } else {
