@@ -51,7 +51,7 @@ public class ArrayDeque<T> {
         int last = getLast();
         System.arraycopy(item, first, newItem, length / 8, length / 4);
         nextFirst = length / 8 - 1;
-        nextLast = length * 3 / 8 + 1;
+        nextLast = length * 3 / 8;
         length /= 2;
         item = newItem;
     }
@@ -121,9 +121,10 @@ public class ArrayDeque<T> {
         int first = getFirst();
         double useRatio = (double) size / length;
         final int minChangeSize = 16;
-        if (useRatio == 0.25 && size >= minChangeSize) {
+        if (useRatio == 0.25 && length >= minChangeSize) {
             downsize();
         }
+        first = getFirst();
         T returnValue = item[first];
         item[first] = null;
         nextFirst = first;
@@ -138,9 +139,10 @@ public class ArrayDeque<T> {
         int last = getLast();
         double useRatio = (double) size / length;
         final int minChangeSize = 16;
-        if (useRatio == 0.25 && size >= minChangeSize) {
+        if (useRatio == 0.25 && length >= minChangeSize) {
             downsize();
         }
+        last = getLast();
         T returnValue = item[last];
         item[last] = null;
         nextLast = last;
