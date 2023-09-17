@@ -5,7 +5,7 @@
 //
 //public class ArrayDequeTest {
 //    @Test
-//    public void testResize() {
+//    public void testResize() {Dele
 //        ArrayDeque<Integer> item = new ArrayDeque<>();
 //        ArrayDeque<Integer> new_item = new ArrayDeque();
 //    }
