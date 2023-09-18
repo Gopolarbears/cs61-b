@@ -9,7 +9,7 @@ public class Palindrome {
     }
 
     public boolean isPalindrome(String word) {
-        LinkedListDeque<Character> wordLLD = (LinkedListDeque)wordToDeque(word);
+        LinkedListDeque<Character> wordLLD = (LinkedListDeque) wordToDeque(word);
         return isPalindromeHelper(wordLLD);
     }
 
@@ -26,7 +26,7 @@ public class Palindrome {
     }
 
     public boolean isPalindrome(String word, CharacterComparator cc) {
-        LinkedListDeque<Character> wordD = (LinkedListDeque)wordToDeque(word);
+        LinkedListDeque<Character> wordD = (LinkedListDeque) wordToDeque(word);
         int halfSize = wordD.size() / 2;
         for (int i = 0; i < halfSize; i++) {
             if (!cc.equalChars(wordD.removeFirst(), wordD.removeLast())) {
