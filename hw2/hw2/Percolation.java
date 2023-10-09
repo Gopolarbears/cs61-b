@@ -12,9 +12,6 @@ public class Percolation {
             throw new java.lang.IllegalArgumentException("N must greater than or equal to 0");
         }
         openGrid = new int[N * N];
-        for (int i = 0; i < N; i++) {
-            openGrid[i] = 1;
-        }
         fullGrid = new WeightedQuickUnionUF(N * N);
         size = N;
         openSites = 0;
