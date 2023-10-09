@@ -25,7 +25,7 @@ public class InteractivePercolationVisualizer {
 
         // turn on animation mode
         StdDraw.show(0);
-
+git 
         // repeatedly open site specified my mouse click and draw resulting system
         StdOut.println(N);
 

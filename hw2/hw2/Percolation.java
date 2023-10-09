@@ -3,17 +3,16 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    int[] openGrid;
-    WeightedQuickUnionUF fullGrid;
-    int fullParent;
-    int size;
-    int openSites;
+    private int[] openGrid;
+    private WeightedQuickUnionUF fullGrid;
+    private int size;
+    private int openSites;
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException("N must greater than or equal to 0");
         }
         openGrid = new int[N * N];
-        for (int i = 0; i < N; i ++) {
+        for (int i = 0; i < N; i++) {
             openGrid[i] = 1;
         }
         fullGrid = new WeightedQuickUnionUF(N * N);

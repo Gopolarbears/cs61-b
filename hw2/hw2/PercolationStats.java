@@ -3,10 +3,10 @@ import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
-    double[] x;
-    double mean;
-    double stddev;
-    double doubleT;
+    private double[] x;
+    private double mean;
+    private double stddev;
+    private double doubleT;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException("index error");
@@ -20,7 +20,7 @@ public class PercolationStats {
             while (!oneTest.percolates()) {
                 oneTest.open(StdRandom.uniform(0, N), StdRandom.uniform(0, N));
             }
-            x[i] = oneTest.openSites / (double)(N * N);
+            x[i] = oneTest.numberOfOpenSites() / (double) (N * N);
         }
         mean = StdStats.mean(x);
         stddev = StdStats.stddev(x);
