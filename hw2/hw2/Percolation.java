@@ -61,7 +61,7 @@ public class Percolation {
         outOfIndex(row, col);
         int location = row * size + col;
         for (int i = 0; i < size; i++) {
-            if (fullGrid.connected(i, location)) {
+            if (fullGrid.connected(i, location) && isOpen(0, i)) {
                 return true;
             }
         }
@@ -82,6 +82,5 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-
     }
 }
