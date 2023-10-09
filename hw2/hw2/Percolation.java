@@ -26,17 +26,21 @@ public class Percolation {
     public void open(int row, int col) {
         outOfIndex(row, col);
         int location = row * size + col;
-        openGrid[location] = 1;
-        openWater(row, col);
-        openSites += 1;
+        if (openGrid[location] == 0) {
+            openGrid[location] = 1;
+            openWater(row, col);
+            openSites += 1;
+        }
     }
 
     private void openWater(int row, int col) {
         int location = row * size + col;
-        if (location > 0 && openGrid[location - 1] == 1 && location % size != 0) {
+        if (location > 0 && openGrid[location - 1] == 1
+                && location % size != 0) {
             fullGrid.union(location, location - 1);
         }
-        if (location < size * size - 1 && openGrid[location + 1] == 1 && (location + 1) % size != 0) {
+        if (location < size * size - 1 && openGrid[location + 1] == 1
+                && (location + 1) % size != 0) {
             fullGrid.union(location, location + 1);
         }
         if (row < size - 1) {
