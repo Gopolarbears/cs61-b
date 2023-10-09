@@ -33,10 +33,10 @@ public class Percolation {
 
     private void openWater(int row, int col) {
         int location = row * size + col;
-        if (openGrid[location - 1] == 1) {
+        if (location > 0 && openGrid[location - 1] == 1 && location % size != 0) {
             fullGrid.union(location, location - 1);
         }
-        if (openGrid[location + 1] == 1) {
+        if (location < size * size - 1 && openGrid[location + 1] == 1 && (location + 1) % size != 0) {
             fullGrid.union(location, location + 1);
         }
         if (row < size - 1) {
@@ -82,5 +82,7 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
+        Percolation a = new Percolation(10);
+        a.isFull(1, 0);
     }
 }
