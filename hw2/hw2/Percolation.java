@@ -8,17 +8,23 @@ public class Percolation {
     private int size;
     private int openSites;
     private int topSite;
+    private int bottomSite;
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException("N must greater than or equal to 0");
         }
         openGrid = new int[N * N];
-        fullGrid = new WeightedQuickUnionUF(N * N + 1);
+        fullGrid = new WeightedQuickUnionUF(N * N + 2);
         size = N;
         openSites = 0;
+        topSite = N * N;
+        bottomSite = N * N + 1;
 
         for (int i = 0; i < N; i++) {
             fullGrid.union(topSite, i);
+        }
+        for (int i = N * (N - 1); i < N * N; i++) {
+            fullGrid.union(bottomSite,i);
         }
     }
 
@@ -81,12 +87,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        for (int i = 0; i < size; i++) {
-            if (isFull(size - 1, i)) {
-                return true;
-            }
-        }
-        return false;
+        return fullGrid.connected(topSite, bottomSite);
     }
 
     public static void main(String[] args) {
