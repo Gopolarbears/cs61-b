@@ -13,7 +13,7 @@ public class PercolationStats {
         }
         doubleT = T;
         Percolation oneTest;
-        x = new double[N];
+        x = new double[T];
 
         for (int i = 0; i < T; i++) {
             oneTest = pf.make(N);
@@ -41,5 +41,4 @@ public class PercolationStats {
     public double confidenceHigh() {
         return (mean + 1.96 * stddev / Math.sqrt(doubleT));
     }
-
 }
