@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int[] openGrid;
     private WeightedQuickUnionUF fullGrid;
+    private WeightedQuickUnionUF fullGrid2;
     private int size;
     private int openSites;
     private int topSite;
@@ -15,6 +16,7 @@ public class Percolation {
         }
         openGrid = new int[N * N];
         fullGrid = new WeightedQuickUnionUF(N * N + 2);
+        fullGrid2 = new WeightedQuickUnionUF(N * N + 2);
         size = N;
         openSites = 0;
         topSite = N * N;
@@ -22,6 +24,7 @@ public class Percolation {
 
         for (int i = 0; i < N; i++) {
             fullGrid.union(topSite, i);
+            fullGrid2.union(topSite, i);
         }
         for (int i = N * (N - 1); i < N * N; i++) {
             fullGrid.union(bottomSite,i);
@@ -49,19 +52,23 @@ public class Percolation {
         if (location > 0 && openGrid[location - 1] == 1
                 && location % size != 0) {
             fullGrid.union(location, location - 1);
+            fullGrid2.union(location, location - 1);
         }
         if (location < size * size - 1 && openGrid[location + 1] == 1
                 && (location + 1) % size != 0) {
             fullGrid.union(location, location + 1);
+            fullGrid2.union(location, location + 1);
         }
         if (row < size - 1) {
             if (openGrid[location + size] == 1) {
                 fullGrid.union(location, location + size);
+                fullGrid2.union(location, location + size);
             }
         }
         if (row > 0) {
             if (openGrid[location - size] == 1) {
                 fullGrid.union(location, location - size);
+                fullGrid2.union(location, location - size);
             }
         }
     }
@@ -78,7 +85,7 @@ public class Percolation {
         if (!isOpen(row, col)) {
             return false;
         }
-        return fullGrid.connected(topSite, location);
+        return fullGrid2.connected(topSite, location);
 
     }
 
@@ -92,6 +99,6 @@ public class Percolation {
 
     public static void main(String[] args) {
         Percolation a = new Percolation(10);
-        a.isFull(1, 0);
+        System.out.println(a.percolates());
     }
 }
