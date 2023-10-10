@@ -7,14 +7,19 @@ public class Percolation {
     private WeightedQuickUnionUF fullGrid;
     private int size;
     private int openSites;
+    private int topSite;
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException("N must greater than or equal to 0");
         }
         openGrid = new int[N * N];
-        fullGrid = new WeightedQuickUnionUF(N * N);
+        fullGrid = new WeightedQuickUnionUF(N * N + 1);
         size = N;
         openSites = 0;
+
+        for (int i = 0; i < N; i++) {
+            fullGrid.union(topSite, i);
+        }
     }
 
     private void outOfIndex(int row, int col) {
@@ -64,12 +69,11 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         outOfIndex(row, col);
         int location = row * size + col;
-        for (int i = 0; i < size; i++) {
-            if (fullGrid.connected(i, location) && isOpen(0, i)) {
-                return true;
-            }
+        if (!isOpen(row, col)) {
+            return false;
         }
-        return false;
+        return fullGrid.connected(topSite, location);
+
     }
 
     public int numberOfOpenSites() {
