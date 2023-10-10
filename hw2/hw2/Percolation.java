@@ -27,7 +27,7 @@ public class Percolation {
             fullGrid2.union(topSite, i);
         }
         for (int i = N * (N - 1); i < N * N; i++) {
-            fullGrid.union(bottomSite,i);
+            fullGrid.union(bottomSite, i);
         }
     }
 
@@ -94,11 +94,14 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        if (size == 1) {
+            return isOpen(0, 0);
+        }
         return fullGrid.connected(topSite, bottomSite);
     }
 
     public static void main(String[] args) {
-        Percolation a = new Percolation(10);
+        Percolation a = new Percolation(1);
         System.out.println(a.percolates());
     }
 }
