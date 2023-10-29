@@ -454,7 +454,7 @@ public class Maze implements Observer {
 
 
     // a test client
-   /* public static void main(String[] args) {
+    /* public static void main(String[] args) {
         int N = Integer.parseInt(args[0]);
         int rseed = Integer.parseInt(args[1]);
 
