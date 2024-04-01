@@ -43,6 +43,7 @@ public class Game {
         // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        input = toLower(input);
 
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
 
@@ -288,6 +289,19 @@ public class Game {
 
 
         StdDraw.show();
+    }
+
+    private String toLower(String input) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                sb.append(Character.toLowerCase(ch));
+            } else {
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
     }
 
 
