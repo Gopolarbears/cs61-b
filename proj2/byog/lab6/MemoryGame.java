@@ -44,12 +44,12 @@ public class MemoryGame {
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
 
-        //TODO: Initialize random number generator
+        // Initialize random number generator
         rand = new Random(seed);
     }
 
     public String generateRandomString(int n) {
-        //TODO: Generate random string of letters of length n
+        // Generate random string of letters of length n
         StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < n; i++) {
             int num = RandomUtils.uniform(rand, 0, 26);
@@ -59,8 +59,8 @@ public class MemoryGame {
     }
 
     public void drawFrame(String s) {
-        //TODO: Take the string and display it in the center of the screen
-        //TODO: If game is not over, display relevant game information at the top of the screen
+        // Take the string and display it in the center of the screen
+        // If game is not over, display relevant game information at the top of the screen
         StdDraw.clear(Color.white);
 
         if (!gameOver) {
@@ -82,7 +82,7 @@ public class MemoryGame {
     }
 
     public void flashSequence(String letters) {
-        //TODO: Display each character in letters, making sure to blank the screen between letters
+        // Display each character in letters, making sure to blank the screen between letters
         char[] chars = letters.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             drawFrame(String.valueOf(chars[i]));
@@ -93,7 +93,7 @@ public class MemoryGame {
     }
 
     public String solicitNCharsInput(int n) {
-        //TODO: Read n letters of player input
+        // Read n letters of player input
         StringBuilder builder = new StringBuilder();
         while(builder.length() < n) {
             if (StdDraw.hasNextKeyTyped()) {
@@ -106,11 +106,11 @@ public class MemoryGame {
     }
 
     public void startGame() {
-        //TODO: Set any relevant variables before the game starts
+        // Set any relevant variables before the game starts
         round = 0;
         gameOver = false;
 
-        //TODO: Establish Game loop
+        // Establish Game loop
         while (!gameOver) {
             round++;
             playerTurn = false;

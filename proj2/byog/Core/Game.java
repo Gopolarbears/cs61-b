@@ -7,6 +7,9 @@ import byog.TileEngine.Tileset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import edu.princeton.cs.introcs.StdDraw;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -21,6 +24,7 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+        startInterface();
     }
 
     /**
@@ -261,6 +265,29 @@ public class Game {
                 finalWorldFrame[i][p1.y - 1] = Tileset.WALL;
             }
         }
+    }
+
+    private void startInterface() {
+        int width = 40;
+        int height = 40;
+        StdDraw.setCanvasSize(width * 16, height * 16);
+        Font font = new Font("Monaco", Font.BOLD, 40);
+        StdDraw.setFont(font);
+        StdDraw.setXscale(0, width);
+        StdDraw.setYscale(0, height);
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.enableDoubleBuffering();
+
+        StdDraw.text((double) width / 2, (double) height * 3 / 4, "CS61B: THE GAME");
+        Font smallFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(smallFont);
+        StdDraw.text((double) width / 2, (double) height / 2 + 2, "New Game (N)");
+        StdDraw.text((double) width / 2, (double) height / 2, "Load Game (L)");
+        StdDraw.text((double) width / 2, (double) height / 2 - 2, "Quit (Q)");
+
+
+        StdDraw.show();
     }
 
 
