@@ -22,7 +22,7 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-//        startInterface();
+        // startInterface();
     }
 
     /**
@@ -66,12 +66,12 @@ public class Game {
 
         connectRooms(finalWorldFrame);
 
-//        ter.renderFrame(finalWorldFrame);
+        // ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
     private void initialize(TETile[][] finalWorldFrame) {
-//        ter.initialize(WIDTH, HEIGHT);
+        // ter.initialize(WIDTH, HEIGHT);
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 finalWorldFrame[i][j] = Tileset.NOTHING;
