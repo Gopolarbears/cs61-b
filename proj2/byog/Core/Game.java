@@ -15,7 +15,7 @@ public class Game {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
     private long SEED;
-    private Random RANDOM = new Random(SEED);
+    private Random RANDOM;
     private List<Room> roomList = new LinkedList<>();
 
     /**
@@ -54,6 +54,7 @@ public class Game {
             }
         }
         SEED = Long.parseLong(seed.toString());
+        RANDOM = new Random(SEED);
 
 
         //Position p1 = new Position(50, 25);
