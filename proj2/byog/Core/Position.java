@@ -2,6 +2,7 @@ package byog.Core;
 
 /**
  * ClassName: Position
+ * 代表二维坐标, 有x坐标和y坐标
  * Description:
  *
  * @Author Seth Neiman

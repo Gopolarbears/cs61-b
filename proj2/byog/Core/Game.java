@@ -10,8 +10,6 @@ import java.util.Random;
 import edu.princeton.cs.introcs.StdDraw;
 import java.awt.Color;
 import java.awt.Font;
-import edu.princeton.cs.introcs.StdDraw;
-
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -26,7 +24,7 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-        startInterface();
+//        startInterface();
     }
 
     /**
@@ -74,7 +72,7 @@ public class Game {
     }
 
     private void initialize(TETile[][] finalWorldFrame) {
-        ter.initialize(WIDTH, HEIGHT);
+//        ter.initialize(WIDTH, HEIGHT);
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 finalWorldFrame[i][j] = Tileset.NOTHING;
@@ -270,28 +268,28 @@ public class Game {
         }
     }
 
-    private void startInterface() {
-        int width = 40;
-        int height = 40;
-        StdDraw.setCanvasSize(width * 16, height * 16);
-        Font font = new Font("Monaco", Font.BOLD, 40);
-        StdDraw.setFont(font);
-        StdDraw.setXscale(0, width);
-        StdDraw.setYscale(0, height);
-        StdDraw.clear(Color.BLACK);
-        StdDraw.setPenColor(Color.WHITE);
-        StdDraw.enableDoubleBuffering();
-
-        StdDraw.text((double) width / 2, (double) height * 3 / 4, "CS61B: THE GAME");
-        Font smallFont = new Font("Monaco", Font.BOLD, 20);
-        StdDraw.setFont(smallFont);
-        StdDraw.text((double) width / 2, (double) height / 2 + 2, "New Game (N)");
-        StdDraw.text((double) width / 2, (double) height / 2, "Load Game (L)");
-        StdDraw.text((double) width / 2, (double) height / 2 - 2, "Quit (Q)");
-
-
-        StdDraw.show();
-    }
+//    private void startInterface() {
+//        int width = 40;
+//        int height = 40;
+//        StdDraw.setCanvasSize(width * 16, height * 16);
+//        Font font = new Font("Monaco", Font.BOLD, 40);
+//        StdDraw.setFont(font);
+//        StdDraw.setXscale(0, width);
+//        StdDraw.setYscale(0, height);
+//        StdDraw.clear(Color.BLACK);
+//        StdDraw.setPenColor(Color.WHITE);
+//        StdDraw.enableDoubleBuffering();
+//
+//        StdDraw.text((double) width / 2, (double) height * 3 / 4, "CS61B: THE GAME");
+//        Font smallFont = new Font("Monaco", Font.BOLD, 20);
+//        StdDraw.setFont(smallFont);
+//        StdDraw.text((double) width / 2, (double) height / 2 + 2, "New Game (N)");
+//        StdDraw.text((double) width / 2, (double) height / 2, "Load Game (L)");
+//        StdDraw.text((double) width / 2, (double) height / 2 - 2, "Quit (Q)");
+//
+//
+//        StdDraw.show();
+//    }
 
     private String toLower(String input) {
         StringBuilder sb = new StringBuilder();
@@ -305,8 +303,5 @@ public class Game {
         }
         return sb.toString();
     }
-
-
-
 
 }
