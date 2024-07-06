@@ -10,6 +10,8 @@ import java.util.Random;
 import edu.princeton.cs.introcs.StdDraw;
 import java.awt.Color;
 import java.awt.Font;
+import edu.princeton.cs.introcs.StdDraw;
+
 
 public class Game {
     TERenderer ter = new TERenderer();
