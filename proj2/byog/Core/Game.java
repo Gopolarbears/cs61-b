@@ -7,9 +7,7 @@ import byog.TileEngine.Tileset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-//import edu.princeton.cs.introcs.StdDraw;
-import java.awt.Color;
-import java.awt.Font;
+
 
 public class Game {
     TERenderer ter = new TERenderer();
