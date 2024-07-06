@@ -65,7 +65,7 @@ public class Game {
 
         connectRooms(finalWorldFrame);
 
-        ter.renderFrame(finalWorldFrame);
+//        ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
