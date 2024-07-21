@@ -196,9 +196,17 @@ public class Game {
     }
 
     private void lConnect(TETile[][] finalWorldFrame, Room tRoom, Room bRoom) {
-
-        int x = RandomUtils.uniform(RANDOM, Math.max(bRoom.topLeft.x, tRoom.topLeft.x),
-                Math.min(tRoom.topRight.x, bRoom.topRight.x) + 1);
+        int x =  -1;
+        if (Math.max(bRoom.topLeft.x, tRoom.topLeft.x) == 0) {
+            x = RandomUtils.uniform(RANDOM, Math.max(bRoom.topLeft.x, tRoom.topLeft.x) + 1,
+                    Math.min(tRoom.topRight.x, bRoom.topRight.x) + 1);
+        } else if (Math.min(tRoom.topRight.x, bRoom.topRight.x)  == WIDTH - 1) {
+            x = RandomUtils.uniform(RANDOM, Math.max(bRoom.topLeft.x, tRoom.topLeft.x),
+                    Math.min(tRoom.topRight.x, bRoom.topRight.x));
+        } else {
+            x = RandomUtils.uniform(RANDOM, Math.max(bRoom.topLeft.x, tRoom.topLeft.x),
+                    Math.min(tRoom.topRight.x, bRoom.topRight.x) + 1);
+        }
         Position p1 = new Position(x, tRoom.bottomRight.y + 1);
         Position p2 = new Position(x, bRoom.topLeft.y - 1);
         v2Hallway(finalWorldFrame, p1, p2);
