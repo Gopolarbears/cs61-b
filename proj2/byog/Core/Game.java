@@ -512,7 +512,6 @@ public class Game implements Serializable {
             state = saveState(state);
             os.writeObject(state);
             os.close();
-            System.exit(0);
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
             System.exit(0);
