@@ -501,7 +501,7 @@ public class Game implements Serializable {
     }
 
     private void saveGameInputString() {
-        File f = new File("./state.ser");
+        File f = new File("./state.txt");
         try {
             if (!f.exists()) {
                 f.createNewFile();
@@ -588,7 +588,7 @@ public class Game implements Serializable {
     }
 
     private void loadGame() {
-        File f = new File("./state.ser");
+        File f = new File("./state.txt");
         if (f.exists()) {
             try {
                 FileInputStream fs = new FileInputStream(f);
@@ -620,7 +620,7 @@ public class Game implements Serializable {
     }
 
     private void loadGameInputString() {
-        File f = new File("./state.ser");
+        File f = new File("./state.txt");
         if (f.exists()) {
             try {
                 FileInputStream fs = new FileInputStream(f);
