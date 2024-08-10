@@ -117,13 +117,13 @@ public class Game implements Serializable {
                 i++;
             }
             if (i == input.length()) {
-                ter.renderFrame(finalWorldFrame);
+//                ter.renderFrame(finalWorldFrame);
                 return finalWorldFrame;
             }
             if (input.charAt(i) == ':' && (input.charAt(i + 1) == 'Q' || input.charAt(i + 1) == 'q')) {
                 saveGameInputString();
             }
-            ter.renderFrame(finalWorldFrame);
+//            ter.renderFrame(finalWorldFrame);
             return finalWorldFrame;
         } else if (input.charAt(0) == 'L' || input.charAt(0) == 'l') {
             loadGameInputString();
@@ -132,13 +132,13 @@ public class Game implements Serializable {
                 i++;
             }
             if (i == input.length()) {
-                ter.renderFrame(finalWorldFrame);
+//                ter.renderFrame(finalWorldFrame);
                 return finalWorldFrame;
             }
             if (input.charAt(i) == ':' && input.charAt(i + 1) == 'Q' || input.charAt(i + 1) == 'q') {
                 saveGameInputString();
             }
-            ter.renderFrame(finalWorldFrame);
+//            ter.renderFrame(finalWorldFrame);
             return finalWorldFrame;
         }
 
@@ -151,7 +151,7 @@ public class Game implements Serializable {
     }
 
     private void initialize(TETile[][] finalWorldFrame) {
-        ter.initialize(WIDTH, HEIGHT);
+//        ter.initialize(WIDTH, HEIGHT);
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT + extraHeight; j++) {
                 finalWorldFrame[i][j] = Tileset.NOTHING;
