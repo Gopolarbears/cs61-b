@@ -1,5 +1,7 @@
 package byog.Core;
 
+import java.io.Serializable;
+
 /**
  * ClassName: Room
  * Description:
@@ -8,7 +10,7 @@ package byog.Core;
  * @Create 2024/3/26 21:16
  * @Version 1.0
  */
-public class Room {
+public class Room implements Serializable {
     Position topLeft;
     Position topRight;
     Position bottomLeft;

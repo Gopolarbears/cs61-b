@@ -1,28 +1,80 @@
 package byog.Core;
 
+//import byog.SaveDemo.World;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import edu.princeton.cs.introcs.StdDraw;
 
+
+//import javax.imageio.plugins.tiff.ExifGPSTagSet;
+import java.awt.*;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 
-public class Game {
+public class Game implements Serializable {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    private static int WIDTH = 80;
+    private static int HEIGHT = 30;
+    private static int extraHeight = 2;
+    private static int interfaceWidth = 40;
+    private static int interfaceHeight = 40;
+    private static int wTextPosition = 1;
+    private static int hTextPosition = HEIGHT + extraHeight - 1;
+    private static TETile[][] finalWorldFrame;
+    private static int xPlayerPosition;
+    private static int yPlayerPosition;
+    private static int xLockedDoorPosition;
+    private static int yLockedDoorPosition;
     private long SEED;
     private Random RANDOM;
     private List<Room> roomList = new LinkedList<>();
+
+    public static class State implements Serializable {
+        public int WIDTH;
+        public int HEIGHT;
+        public int extraHeight;
+        public int interfaceWidth;
+        public int interfaceHeight;
+        public int wTextPosition;
+        public int hTextPosition;
+        public TETile[][] finalWorldFrame;
+        public int xPlayerPosition;
+        public int yPlayerPosition;
+        public int xLockedDoorPosition;
+        public int yLockedDoorPosition;
+        public long SEED;
+        public Random RANDOM;
+        public List<Room> roomList;
+    }
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-        // startInterface();
+        startInterface();
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char choise = StdDraw.nextKeyTyped();
+                choise = Character.toUpperCase(choise);
+                switch (choise) {
+                    case 'N':
+                        newGame();
+                        break;
+                    case 'L':
+                        loadGame();
+                        break;
+                    case 'Q':
+                        quit();
+                        break;
+                    default:
+                }
+            }
+        }
     }
 
     /**
@@ -41,39 +93,66 @@ public class Game {
         // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        input = toLower(input);
 
-        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
+        finalWorldFrame = new TETile[WIDTH][HEIGHT + extraHeight];
 
         initialize(finalWorldFrame);
 
         StringBuilder seed = new StringBuilder();
-        for (char ch : input.toCharArray()) {
-            if ('0' <= ch && ch <= '9') {
-                seed.append(ch);
+        int i = 1;
+        if (input.charAt(0) == 'N' || input.charAt(0) == 'n') {
+            while (input.charAt(i) != 'S' && input.charAt(i) != 's') {
+                seed.append(input.charAt(i));
+                i++;
             }
+            SEED = Long.parseLong(seed.toString());
+            RANDOM = new Random(SEED);
+            generateRooms(finalWorldFrame);
+            connectRooms(finalWorldFrame);
+            playerInitialize();
+            lockedDoorInitialize();
+            while (i < input.length() && input.charAt(i) != ':') {
+                move(input.charAt(i));
+                i++;
+            }
+            if (i == input.length()) {
+//                ter.renderFrame(finalWorldFrame);
+                return finalWorldFrame;
+            }
+            if (input.charAt(i) == ':' && input.charAt(i + 1) == 'Q') {
+                saveGameInputString();
+            }
+//            ter.renderFrame(finalWorldFrame);
+            return finalWorldFrame;
+        } else if (input.charAt(0) == 'L' || input.charAt(0) == 'l') {
+            loadGameInputString();
+            while (i < input.length() && input.charAt(i) != ':') {
+                move(input.charAt(i));
+                i++;
+            }
+            if (i == input.length()) {
+//                ter.renderFrame(finalWorldFrame);
+                return finalWorldFrame;
+            }
+            if (input.charAt(i) == ':' && input.charAt(i + 1) == 'Q') {
+                saveGameInputString();
+            }
+//            ter.renderFrame(finalWorldFrame);
+            return finalWorldFrame;
         }
-        SEED = Long.parseLong(seed.toString());
-        RANDOM = new Random(SEED);
 
 
         //Position p1 = new Position(50, 25);
         //Position p2 = new Position(50, 20);
         //v2Hallway(finalWorldFrame, p1, p2);
 
-
-        generateRooms(finalWorldFrame);
-
-        connectRooms(finalWorldFrame);
-
-        // ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
     private void initialize(TETile[][] finalWorldFrame) {
-        // ter.initialize(WIDTH, HEIGHT);
+//        ter.initialize(WIDTH, HEIGHT);
         for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+            for (int j = 0; j < HEIGHT + extraHeight; j++) {
                 finalWorldFrame[i][j] = Tileset.NOTHING;
             }
         }
@@ -275,28 +354,54 @@ public class Game {
         }
     }
 
-//    private void startInterface() {
-//        int width = 40;
-//        int height = 40;
-//        StdDraw.setCanvasSize(width * 16, height * 16);
-//        Font font = new Font("Monaco", Font.BOLD, 40);
-//        StdDraw.setFont(font);
-//        StdDraw.setXscale(0, width);
-//        StdDraw.setYscale(0, height);
-//        StdDraw.clear(Color.BLACK);
-//        StdDraw.setPenColor(Color.WHITE);
-//        StdDraw.enableDoubleBuffering();
-//
-//        StdDraw.text((double) width / 2, (double) height * 3 / 4, "CS61B: THE GAME");
-//        Font smallFont = new Font("Monaco", Font.BOLD, 20);
-//        StdDraw.setFont(smallFont);
-//        StdDraw.text((double) width / 2, (double) height / 2 + 2, "New Game (N)");
-//        StdDraw.text((double) width / 2, (double) height / 2, "Load Game (L)");
-//        StdDraw.text((double) width / 2, (double) height / 2 - 2, "Quit (Q)");
-//
-//
-//        StdDraw.show();
-//    }
+    private void startInterface() {
+        StdDraw.setCanvasSize(interfaceWidth * 16, interfaceHeight * 16);
+        Font font = new Font("Monaco", Font.BOLD, 40);
+        StdDraw.setFont(font);
+        StdDraw.setXscale(0, interfaceWidth);
+        StdDraw.setYscale(0, interfaceHeight);
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.enableDoubleBuffering();
+
+        StdDraw.text((double) interfaceWidth / 2, (double) interfaceHeight * 3 / 4, "CS61B: THE GAME");
+        Font smallFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(smallFont);
+        StdDraw.text((double) interfaceWidth / 2, (double) interfaceHeight / 2 + 2, "New Game (N)");
+        StdDraw.text((double) interfaceWidth / 2, (double) interfaceHeight / 2, "Load Game (L)");
+        StdDraw.text((double) interfaceWidth / 2, (double) interfaceHeight / 2 - 2, "Quit (Q)");
+
+
+        StdDraw.show();
+    }
+
+    private void playerInitialize() {
+        while (true) {
+            xPlayerPosition = RandomUtils.uniform(RANDOM, WIDTH);
+            yPlayerPosition = RandomUtils.uniform(RANDOM, HEIGHT);
+            if (finalWorldFrame[xPlayerPosition][yPlayerPosition] == Tileset.FLOOR) {
+                finalWorldFrame[xPlayerPosition][yPlayerPosition] = Tileset.PLAYER;
+                break;
+            }
+        }
+    }
+
+    private void lockedDoorInitialize() {
+        while (true) {
+            xLockedDoorPosition = RandomUtils.uniform(RANDOM, WIDTH);
+            yLockedDoorPosition = RandomUtils.uniform(RANDOM, HEIGHT);
+            if (finalWorldFrame[xLockedDoorPosition][yLockedDoorPosition] == Tileset.WALL
+                && xLockedDoorPosition > 0 && xLockedDoorPosition < WIDTH - 1
+                && yLockedDoorPosition > 0 && yLockedDoorPosition < HEIGHT - 1
+                && (finalWorldFrame[xLockedDoorPosition - 1][yLockedDoorPosition] == Tileset.FLOOR
+                    || finalWorldFrame[xLockedDoorPosition + 1][yLockedDoorPosition] == Tileset.FLOOR
+                    || finalWorldFrame[xLockedDoorPosition][yLockedDoorPosition - 1] == Tileset.FLOOR
+                    || finalWorldFrame[xLockedDoorPosition][yLockedDoorPosition + 1] == Tileset.FLOOR)) {
+                finalWorldFrame[xLockedDoorPosition][yLockedDoorPosition] = Tileset.LOCKED_DOOR;
+                break;
+            }
+        }
+    }
 
     private String toLower(String input) {
         StringBuilder sb = new StringBuilder();
@@ -309,6 +414,254 @@ public class Game {
             }
         }
         return sb.toString();
+    }
+
+    private void newGame() {
+        StdDraw.clear(Color.BLACK);
+        StdDraw.show();
+        StringBuffer buffer = new StringBuffer();
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char ch = StdDraw.nextKeyTyped();
+                ch = Character.toUpperCase(ch);
+                if (ch == 'S') {
+                    break;
+                } else {
+                    buffer.append(ch);
+                    drawNum(buffer);
+                }
+            }
+        }
+
+        finalWorldFrame = new TETile[WIDTH][HEIGHT + extraHeight];
+        initialize(finalWorldFrame);
+
+        SEED = Long.parseLong(buffer.toString());
+        RANDOM = new Random(SEED);
+
+        ter.initialize(WIDTH, HEIGHT + extraHeight);
+
+        generateRooms(finalWorldFrame);
+        connectRooms(finalWorldFrame);
+        playerInitialize();
+        lockedDoorInitialize();
+
+        ter.renderFrame(finalWorldFrame);
+
+        while (true) {
+            if (gameGoing()) {
+                break;
+            }
+        }
+    }
+
+    private void drawNum(StringBuffer buffer) {
+        StdDraw.clear(Color.BLACK);
+        Font smallFont = new Font("Serif", Font.BOLD, 30);
+        StdDraw.setFont(smallFont);
+        StdDraw.text((double) interfaceHeight / 2, (double) interfaceHeight / 2, buffer.toString());
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.show();
+    }
+
+    private boolean gameGoing() {
+        if (StdDraw.hasNextKeyTyped()) {
+            char ch = StdDraw.nextKeyTyped();
+            if (ch == ':') {
+                saveGame();
+            } else if (ch == 'w' || ch == 'W' || ch == 's' || ch == 'S'
+                || ch == 'a' || ch == 'A' || ch == 'd' || ch == 'D') {
+                move(ch);
+                if (xPlayerPosition == xLockedDoorPosition && yPlayerPosition == yLockedDoorPosition) {
+                    win();
+                    return true;
+                }
+            }
+
+        }
+        ter.renderFrame(finalWorldFrame);
+        Font font = new Font("Monaco", Font.BOLD, 30);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.textLeft(wTextPosition, hTextPosition,
+                finalWorldFrame[(int) StdDraw.mouseX()][(int) StdDraw.mouseY()].description());
+        StdDraw.show();
+        return false;
+    }
+
+    private void saveGame() {
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char ch = StdDraw.nextKeyTyped();
+                if (ch == 'Q') {
+                    saveGameInputString();
+                }
+            }
+        }
+    }
+
+    private void saveGameInputString() {
+        File f = new File("./state.ser");
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileOutputStream fs = new FileOutputStream(f);
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            State state = new State();
+            state = saveState(state);
+            os.writeObject(state);
+            os.close();
+            System.exit(0);
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(0);
+        }
+    }
+
+    private State saveState(State state) {
+        state.WIDTH = WIDTH;
+        state.HEIGHT = HEIGHT;
+        state.extraHeight = extraHeight;
+        state.interfaceWidth = interfaceWidth;
+        state.interfaceHeight = interfaceHeight;
+        state.wTextPosition = wTextPosition;
+        state.hTextPosition = hTextPosition;
+        state.finalWorldFrame = finalWorldFrame;
+        state.xPlayerPosition = xPlayerPosition;
+        state.yPlayerPosition = yPlayerPosition;
+        state.xLockedDoorPosition = xLockedDoorPosition;
+        state.yLockedDoorPosition = yLockedDoorPosition;
+        state.SEED = SEED;
+        state.RANDOM = RANDOM;
+        state.roomList = roomList;
+        return state;
+    }
+
+    private void move(char ch) {
+        ch = Character.toUpperCase(ch);
+        if (ch == 'W') {
+            if ((yPlayerPosition + 1) < HEIGHT
+                    && (Tileset.FLOOR.equals(finalWorldFrame[xPlayerPosition][yPlayerPosition + 1])
+                    || Tileset.LOCKED_DOOR.equals(finalWorldFrame[xPlayerPosition][yPlayerPosition + 1]))) {
+                finalWorldFrame[xPlayerPosition][yPlayerPosition] = Tileset.FLOOR;
+                finalWorldFrame[xPlayerPosition][yPlayerPosition + 1] = Tileset.PLAYER;
+                yPlayerPosition++;
+            }
+        } else if (ch == 'S') {
+            if ((yPlayerPosition - 1) >= 0
+                    && (Tileset.FLOOR.equals(finalWorldFrame[xPlayerPosition][yPlayerPosition - 1])
+                    || Tileset.LOCKED_DOOR.equals(finalWorldFrame[xPlayerPosition][yPlayerPosition - 1]))) {
+                finalWorldFrame[xPlayerPosition][yPlayerPosition] = Tileset.FLOOR;
+                finalWorldFrame[xPlayerPosition][yPlayerPosition - 1] = Tileset.PLAYER;
+                yPlayerPosition--;
+            }
+        } else if (ch == 'A') {
+            if ((xPlayerPosition - 1) < WIDTH
+                    && (Tileset.FLOOR.equals(finalWorldFrame[xPlayerPosition - 1][yPlayerPosition])
+                    || Tileset.LOCKED_DOOR.equals(finalWorldFrame[xPlayerPosition - 1][yPlayerPosition]))) {
+                finalWorldFrame[xPlayerPosition][yPlayerPosition] = Tileset.FLOOR;
+                finalWorldFrame[xPlayerPosition - 1][yPlayerPosition] = Tileset.PLAYER;
+                xPlayerPosition--;
+            }
+        } else if (ch == 'D') {
+            if ((xPlayerPosition + 1) >= 0
+                    && (Tileset.FLOOR.equals(finalWorldFrame[xPlayerPosition + 1][yPlayerPosition])
+                            || Tileset.LOCKED_DOOR.equals(finalWorldFrame[xPlayerPosition + 1][yPlayerPosition]))) {
+                finalWorldFrame[xPlayerPosition][yPlayerPosition] = Tileset.FLOOR;
+                finalWorldFrame[xPlayerPosition + 1][yPlayerPosition] = Tileset.PLAYER;
+                xPlayerPosition++;
+            }
+        }
+    }
+
+    private void win() {
+        StdDraw.clear(Color.BLACK);
+        Font font = new Font("Monaco", Font.BOLD, 30);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Congratulations! You Win!");
+        StdDraw.show();
+    }
+
+    private void loadGame() {
+        File f = new File("./state.ser");
+        if (f.exists()) {
+            try {
+                FileInputStream fs = new FileInputStream(f);
+                ObjectInputStream os = new ObjectInputStream(fs);
+                State state = new State();
+                state = (State) os.readObject();
+                loadState(state);
+                os.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("file not found");
+                System.exit(0);
+            } catch (IOException e) {
+                System.out.println(e);
+                System.exit(0);
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                System.exit(0);
+            }
+            ter.initialize(WIDTH, HEIGHT + extraHeight);
+
+            ter.renderFrame(finalWorldFrame);
+
+            while (true) {
+                if (gameGoing()) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private void loadGameInputString() {
+        File f = new File("./state.ser");
+        if (f.exists()) {
+            try {
+                FileInputStream fs = new FileInputStream(f);
+                ObjectInputStream os = new ObjectInputStream(fs);
+                State state = new State();
+                state = (State) os.readObject();
+                loadState(state);
+                os.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("file not found");
+                System.exit(0);
+            } catch (IOException e) {
+                System.out.println(e);
+                System.exit(0);
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                System.exit(0);
+            }
+        }
+    }
+
+    private void loadState(State state) {
+        WIDTH = state.WIDTH;
+        HEIGHT = state.HEIGHT;
+        extraHeight = state.extraHeight;
+        interfaceWidth = state.interfaceWidth;
+        interfaceHeight = state.interfaceHeight;
+        wTextPosition = state.wTextPosition;
+        hTextPosition = state.hTextPosition;
+        finalWorldFrame = state.finalWorldFrame;
+        xPlayerPosition = state.xPlayerPosition;
+        yPlayerPosition = state.yPlayerPosition;
+        xLockedDoorPosition = state.xLockedDoorPosition;
+        yLockedDoorPosition = state.yLockedDoorPosition;
+        SEED = state.SEED;
+        RANDOM = state.RANDOM;
+        roomList = state.roomList;
+    }
+
+    private void quit() {
+        System.exit(0);
     }
 
 }
