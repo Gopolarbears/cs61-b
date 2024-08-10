@@ -104,7 +104,6 @@ public class Game implements Serializable {
             while (input.charAt(i) != 'S' && input.charAt(i) != 's') {
                 seed.append(input.charAt(i));
                 i++;
-                i++;
             }
             SEED = Long.parseLong(seed.toString());
             RANDOM = new Random(SEED);
