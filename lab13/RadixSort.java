@@ -49,8 +49,6 @@ public class RadixSort {
             }
         }
 
-        System.out.println(count[95]);
-
         int[] start = new int[256];
         int pos = 0;
         for (int i = 0; i < start.length; i++) {
