@@ -15,12 +15,17 @@ public class AcceleratingSawToothGenerator implements Generator {
 
     @Override
     public double next() {
-        state++;
-        int weirdState = state & (state >> 7) % period;
-        return normalize(weirdState);
+        double next = normalize(state % period);
+        state = state + 1;
+        if (state == period) {
+            period = (int) (period * factor);
+            state = 0;
+        }
+        return next;
     }
 
-    private double normalize(int x) {
-        return (double) x * 2 / period - 1;
+    private double normalize(int num) {
+        double next = (double) num * 2/ (period - 1) - 1;
+        return next;
     }
 }
