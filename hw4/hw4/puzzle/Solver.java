@@ -2,15 +2,14 @@ package hw4.puzzle;
 
 
 import edu.princeton.cs.algs4.MinPQ;
-
 import java.util.*;
 
 public class Solver {
-    MinPQ<SearchNode> pq = new MinPQ<>(new worldStateComparator());
-    Map<WorldState, SearchNode> map = new HashMap<>();
+    private MinPQ<SearchNode> pq = new MinPQ<>(new WorldStateComparator());
     private List<WorldState> list = new ArrayList<>();
     private SearchNode lastSearchNode;
-    int moves = 0;
+    private int moves = 0;
+    private Map<WorldState, Integer> estimateMap = new HashMap<>();
 
     public Solver(WorldState initial) {
         SearchNode first = new SearchNode(initial, 0, null);
@@ -25,6 +24,9 @@ public class Solver {
                 WorldState currentWorldState = currentNode.worldState;
                 int currentMoves = currentNode.numberOfMoves;
                 for (WorldState neighbor : currentWorldState.neighbors()) {
+                    if (currentNode.previousNode != null && neighbor.equals(currentNode.previousNode.worldState)) {
+                        continue;
+                    }
                     pq.insert(new SearchNode(neighbor, currentMoves + 1, currentNode));
                 }
             }
@@ -57,9 +59,21 @@ public class Solver {
         return list;
     }
 
-    private class worldStateComparator implements Comparator<SearchNode> {
+    private class WorldStateComparator implements Comparator<SearchNode> {
+        @Override
         public int compare(SearchNode o1, SearchNode o2) {
-            return (o1.numberOfMoves + o1.worldState.estimatedDistanceToGoal()) - (o2.numberOfMoves + o2.worldState.estimatedDistanceToGoal());
+            int o1Edtg = getEdtg(o1);
+            int o2Edtg = getEdtg(o2);
+            int o1Priority = o1.numberOfMoves + o1Edtg;
+            int o2Priority = o2.numberOfMoves + o2Edtg;
+            return o1Priority - o2Priority;
+        }
+
+        private int getEdtg(SearchNode sn) {
+            if (!estimateMap.containsKey(sn.worldState)) {
+                estimateMap.put(sn.worldState, sn.worldState.estimatedDistanceToGoal());
+            }
+            return estimateMap.get(sn.worldState);
         }
     }
 }

@@ -2,11 +2,11 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
 
-public class Board implements WorldState{
+public class Board implements WorldState {
 
     /** Returns the string representation of the board. 
       * Uncomment this method. */
-    int BLANK = 0;
+    private int BLANK = 0;
     private int[][] tiles;
     private int size;
 
@@ -122,12 +122,16 @@ public class Board implements WorldState{
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
         s.append("\n");
         return s.toString();
+    }
+
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }
