@@ -87,7 +87,7 @@ public class Board implements WorldState {
             for (int j = 0; j < size(); j++) {
                 if (tileAt(i, j) != BLANK) {
                     res += Math.abs(i - ((tileAt(i, j)) - 1) / size());
-                    res += Math.abs(j - ((tileAt(j, i)) - 1) % size());
+                    res += Math.abs(j - ((tileAt(i, j)) - 1) % size());
                 }
             }
         }
