@@ -99,6 +99,9 @@ public class Board implements WorldState {
     }
 
     public boolean equals(Object y) {
+        if (this == y) {
+            return true;
+        }
         if (!(y instanceof Board)) {
             return false;
         }
