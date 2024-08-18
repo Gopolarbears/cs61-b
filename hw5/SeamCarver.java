@@ -10,14 +10,14 @@ public class SeamCarver {
     private int[][] B;
 
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
         energy = new int[picture.width()][picture.height()];
         rgbInitial();
         energyInitial();
     }
 
     public Picture picture() {
-        return this.picture;
+        return new Picture(picture);
     }
 
     public int width() {
