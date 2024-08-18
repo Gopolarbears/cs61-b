@@ -1,5 +1,7 @@
 import edu.princeton.cs.algs4.Picture;
 
+import java.awt.*;
+
 public class SeamCarver {
     Picture picture;
     int[][] energy;
@@ -120,13 +122,19 @@ public class SeamCarver {
 
         for (int i = 0; i < picture.width(); i++) {
             for (int j = 0; j < picture.height(); j++) {
-                int Rx = R[i - 1 < 0 ? width() - 1 : i - 1][j] - R[i + 1 >= picture.width() ? 0 : i + 1][j];
-                int Gx = G[i - 1 < 0 ? width() - 1 : i - 1][j] - G[i + 1 >= picture.width() ? 0 : i + 1][j];
-                int Bx = B[i - 1 < 0 ? width() - 1 : i - 1][j] - B[i + 1 >= picture.width() ? 0 : i + 1][j];
-                int Ry = R[i][j - 1 < 0 ? height() - 1 : j - 1] - R[i][j + 1 >= picture.height() ? 0 : j + 1];
-                int Gy = G[i][j - 1 < 0 ? height() - 1 : j - 1] - G[i][j + 1 >= picture.height() ? 0 : j + 1];
-                int By = B[i][j - 1 < 0 ? height() - 1 : j - 1] - B[i][j + 1 >= picture.height() ? 0 : j + 1];
-                energy[i][j] = Rx * Rx + Gx * Gx + Bx * Bx + Ry * Ry + Gy * Gy + By * By;
+                int rx = R[i - 1 < 0 ? width() - 1 : i - 1][j]
+                        - R[i + 1 >= picture.width() ? 0 : i + 1][j];
+                int gx = G[i - 1 < 0 ? width() - 1 : i - 1][j]
+                        - G[i + 1 >= picture.width() ? 0 : i + 1][j];
+                int bx = B[i - 1 < 0 ? width() - 1 : i - 1][j]
+                        - B[i + 1 >= picture.width() ? 0 : i + 1][j];
+                int ry = R[i][j - 1 < 0 ? height() - 1 : j - 1]
+                        - R[i][j + 1 >= picture.height() ? 0 : j + 1];
+                int gy = G[i][j - 1 < 0 ? height() - 1 : j - 1]
+                        - G[i][j + 1 >= picture.height() ? 0 : j + 1];
+                int by = B[i][j - 1 < 0 ? height() - 1 : j - 1]
+                        - B[i][j + 1 >= picture.height() ? 0 : j + 1];
+                energy[i][j] = rx * rx + gx * gx + bx * bx + ry * ry + gy * gy + by * by;
             }
         }
     }
@@ -138,10 +146,10 @@ public class SeamCarver {
 
         for (int i = 0; i < picture.width(); i++) {
             for (int j = 0; j < picture.height(); j++) {
-                int rgb = picture.getRGB(i, j);
-                R[i][j] = (rgb >> 16) & 0xff;
-                G[i][j] = (rgb >> 8) & 0xff;
-                B[i][j] = rgb & 0xff;
+                Color rgb = picture.get(i, j);
+                R[i][j] = rgb.getRed();
+                G[i][j] = rgb.getGreen();
+                B[i][j] = rgb.getBlue();
             }
         }
     }
