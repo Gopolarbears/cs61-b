@@ -1,13 +1,13 @@
 import edu.princeton.cs.algs4.Picture;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class SeamCarver {
-    Picture picture;
-    int[][] energy;
-    int[][] R;
-    int[][] G;
-    int[][] B;
+    private Picture picture;
+    private int[][] energy;
+    private int[][] R;
+    private int[][] G;
+    private int[][] B;
 
     public SeamCarver(Picture picture) {
         this.picture = picture;
