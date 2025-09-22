@@ -5,7 +5,7 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -37,7 +37,6 @@ public class IntList {
      * Returns a list equal to L with all elements squared. Destructive.
      */
     public static void dSquareList(IntList L) {
-
         while (L != null) {
             L.first = L.first * L.first;
             L = L.rest;
@@ -51,15 +50,15 @@ public class IntList {
         if (L == null) {
             return null;
         }
-        IntList res = new IntList(L.first * L.first, null);
-        IntList ptr = res;
+        IntList head = new IntList(L.first * L.first, null);
+        IntList ptr = head;
         L = L.rest;
         while (L != null) {
             ptr.rest = new IntList(L.first * L.first, null);
             L = L.rest;
             ptr = ptr.rest;
         }
-        return res;
+        return head;
     }
 
     /**
@@ -81,18 +80,14 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
+        if (A == null) {
+            return B;
+        }
         IntList C = A;
-        if (A == null && B == null){
-            return null;
-        }
-        if (A == null){
-            A = B;
-        }
-        while (A.rest != null){
+        while (A.rest != null) {
             A = A.rest;
         }
-        A.rest = B;
+        A.rest = B;;
         return C;
     }
 
@@ -101,44 +96,20 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        IntList C = new IntList();
-        IntList D = C;
-        if (A == null && B == null) {
-            return null;
-        }
-        while (A  !=  null){
-            C.first = A.first;
-            C.rest = new IntList(0, null);
-            C = C.rest;
+        IntList prev = new IntList(0, null);
+        IntList cur = prev;
+        while (A != null) {
+            cur.rest = new IntList(A.first, null);
             A = A.rest;
+            cur = cur.rest;
         }
-        if (B == null){
-            return D;
-        }
-        while (B.rest != null){
-            C.first = B.first;
-            C.rest = new IntList(0, null);
-            C = C.rest;
+        while (B != null) {
+            cur.rest = new IntList(B.first, null);
             B = B.rest;
+            cur = cur.rest;
         }
-        C.first = B.first;
-        return D;
+        return prev.rest;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
