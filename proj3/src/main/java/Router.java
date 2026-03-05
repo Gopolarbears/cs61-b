@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +24,46 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        long sNode = g.closest(stlon, stlat);
+        long destNode = g.closest(destlon, destlat);
+
+        Map<Long, Double> distTo = new HashMap<>();
+        Map<Long, Long> edgeTo = new HashMap<>();
+        PriorityQueue<Long> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> distTo.get(a) + g.distance(a, destNode)));
+        Set<Long> visted = new HashSet<>();
+        distTo.put(sNode, 0.0);
+        pq.add(sNode);
+
+        while (!pq.isEmpty()) {
+            long node = pq.poll();
+            if (visted.contains(node)) {
+                continue;
+            }
+            visted.add(node);
+            if (node == destNode) {
+                break;
+            }
+            for (long neighbor : g.adjacent(node)) {
+                if (visted.contains(neighbor)) {
+                    continue;
+                }
+                if (!distTo.containsKey(neighbor) || distTo.get(neighbor) > distTo.get(node) + g.distance(node, neighbor)) {
+                    distTo.put(neighbor, distTo.get(node) + g.distance(node, neighbor));
+                    edgeTo.put(neighbor, node);
+                    pq.add(neighbor);
+                }
+            }
+        }
+
+        LinkedList<Long> path = new LinkedList<>();
+        long curNode = destNode;
+        while (curNode != sNode) {
+            path.addFirst(curNode);
+            curNode = edgeTo.get(curNode);
+        }
+        path.addFirst(sNode);
+
+        return path; // FIXME
     }
 
     /**
@@ -37,7 +75,56 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        List<NavigationDirection> directions = new ArrayList<>();
+
+        NavigationDirection cur = new NavigationDirection();
+        cur.direction = NavigationDirection.START;
+        String way = g.getWayName(route.get(0), route.get(1));
+        double distance = g.distance(route.get(0), route.get(1));
+
+        for (int i = 1; i < route.size() - 1; i++) {
+            String nextWay = g.getWayName(route.get(i), route.get(i + 1));
+            if (Objects.equals(way, nextWay)) {
+                distance += g.distance(route.get(i), route.get(i + 1));
+            } else {
+                cur.way = way;
+                cur.distance = distance;
+                directions.add(cur);
+                cur = new NavigationDirection();
+                double preBearing = g.bearing(route.get(i - 1), route.get(i));
+                double curBearing = g.bearing(route.get(i), route.get(i + 1));
+                cur.direction = convertBearingToDirection(preBearing, curBearing);
+                way = nextWay;
+                distance = g.distance(route.get(i), route.get(i + 1));
+            }
+        }
+        directions.add(cur);
+        return directions; //
+    }
+
+    private static int convertBearingToDirection(double preBearing, double curBearing) {
+        double relativeBearing = curBearing - preBearing;
+        if (relativeBearing > 180) {
+            relativeBearing -= 360;
+        } else if (relativeBearing < -180) {
+            relativeBearing += 360;
+        }
+
+        if (relativeBearing < -100) {
+            return NavigationDirection.SHARP_LEFT;
+        } else if (relativeBearing < -30) {
+            return NavigationDirection.LEFT;
+        } else if (relativeBearing < -15) {
+            return NavigationDirection.SLIGHT_LEFT;
+        } else if (relativeBearing < 15) {
+            return NavigationDirection.STRAIGHT;
+        } else if (relativeBearing < 30) {
+            return NavigationDirection.SLIGHT_RIGHT;
+        } else if (relativeBearing < 100) {
+            return NavigationDirection.RIGHT;
+        } else {
+            return NavigationDirection.SHARP_RIGHT;
+        }
     }
 
 

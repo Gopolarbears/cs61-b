@@ -9,8 +9,16 @@ import java.util.Map;
  */
 public class Rasterer {
 
+    private static final int Depths = 8;
+
+    private double[] depthLongDpp;
+
     public Rasterer() {
         // YOUR CODE HERE
+        depthLongDpp = new double[Depths];
+        for (int i = 0; i < depthLongDpp.length; i++) {
+            depthLongDpp[i] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / (MapServer.TILE_SIZE * Math.pow(2, i));
+        }
     }
 
     /**
@@ -42,11 +50,63 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
+        if (!validateParams(params)) {
+            results.put("query_success", false);
+            return results;
+        }
+        determineDepth(params, results);
+        findImages(params, results);
+        results.put("query_success", true);
         return results;
+    }
+
+    private boolean validateParams(Map<String, Double> params) {
+       return params.get("lrlon") > MapServer.ROOT_ULLON
+               && params.get("ullon") < MapServer.ROOT_LRLON
+               && params.get("lrlat") < MapServer.ROOT_ULLAT
+               && params.get("ullat") > MapServer.ROOT_LRLAT
+               && (params.get("lrlon") > params.get("ullon"))
+               && (params.get("ullat") > params.get("lrlat"));
+    }
+
+    private void determineDepth(Map<String, Double> params, Map<String, Object> results) {
+        double londDpp = (params.get("lrlon") - params.get("ullon")) / params.get("w");
+        for (int i = 0; i < depthLongDpp.length; i++) {
+            if (depthLongDpp[i] < londDpp) {
+                results.put("depth", i);
+                return;
+            }
+        }
+        results.put("depth", depthLongDpp.length - 1);
+    }
+
+    private void findImages(Map<String, Double> params, Map<String, Object> results) {
+        double lonPerTile = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / Math.pow(2, (int) results.get("depth"));
+        double latPerTile = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / Math.pow(2, (int) results.get("depth"));
+        int leftIndex = (int) ((params.get("ullon") - MapServer.ROOT_ULLON) / lonPerTile);
+        int rightIndex = (int) Math.pow(2, (int) results.get("depth")) - 1 - (int) ((MapServer.ROOT_LRLON - params.get("lrlon")) / lonPerTile);
+        int upperIndex = (int) ((MapServer.ROOT_ULLAT - params.get("ullat")) / latPerTile);
+        int lowerIndex = (int) Math.pow(2, (int) results.get("depth")) - 1 - (int) ((params.get("lrlat") - MapServer.ROOT_LRLAT) / latPerTile);
+        leftIndex = Math.max(leftIndex, 0);
+        rightIndex = Math.min(rightIndex, (int) Math.pow(2, (int) results.get("depth")) - 1);
+        upperIndex = Math.max(upperIndex, 0);
+        lowerIndex = Math.min(lowerIndex, (int) Math.pow(2, (int) results.get("depth")) - 1);
+
+        // Corner Cases
+        results.put("raster_ul_lon", MapServer.ROOT_ULLON + leftIndex * lonPerTile);
+        results.put("raster_lr_lon", MapServer.ROOT_ULLON + (rightIndex + 1) * lonPerTile);
+        results.put("raster_ul_lat", MapServer.ROOT_ULLAT - upperIndex * latPerTile);
+        results.put("raster_lr_lat", MapServer.ROOT_ULLAT - (lowerIndex + 1) * latPerTile);
+
+        String[][] renderGrid = new String[lowerIndex - upperIndex + 1][rightIndex - leftIndex + 1];
+
+        for (int i = 0; i < lowerIndex - upperIndex + 1; i++) {
+            for (int j = 0; j < rightIndex - leftIndex + 1; j++) {
+                renderGrid[i][j] = "d" + String.valueOf(results.get("depth")) + "_x" + (leftIndex + j) + "_y" + (upperIndex + i) + ".png";
+            }
+        }
+        results.put("render_grid", renderGrid);
     }
 
 }
