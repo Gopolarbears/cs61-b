@@ -29,7 +29,9 @@ public class Router {
 
         Map<Long, Double> distTo = new HashMap<>();
         Map<Long, Long> edgeTo = new HashMap<>();
-        PriorityQueue<Long> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> distTo.get(a) + g.distance(a, destNode)));
+        PriorityQueue<Long> pq = new PriorityQueue<>(
+                Comparator.comparingDouble(a -> distTo.get(a) + g.distance(a, destNode))
+        );
         Set<Long> visted = new HashSet<>();
         distTo.put(sNode, 0.0);
         pq.add(sNode);
@@ -47,7 +49,8 @@ public class Router {
                 if (visted.contains(neighbor)) {
                     continue;
                 }
-                if (!distTo.containsKey(neighbor) || distTo.get(neighbor) > distTo.get(node) + g.distance(node, neighbor)) {
+                if (!distTo.containsKey(neighbor)
+                        || distTo.get(neighbor) > distTo.get(node) + g.distance(node, neighbor)) {
                     distTo.put(neighbor, distTo.get(node) + g.distance(node, neighbor));
                     edgeTo.put(neighbor, node);
                     pq.add(neighbor);
@@ -63,7 +66,7 @@ public class Router {
         }
         path.addFirst(sNode);
 
-        return path; // FIXME
+        return path;
     }
 
     /**

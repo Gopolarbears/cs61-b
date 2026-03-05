@@ -9,13 +9,13 @@ import java.util.Map;
  */
 public class Rasterer {
 
-    private static final int Depths = 8;
+    private static final int DEPTHS = 8;
 
     private double[] depthLongDpp;
 
     public Rasterer() {
         // YOUR CODE HERE
-        depthLongDpp = new double[Depths];
+        depthLongDpp = new double[DEPTHS];
         for (int i = 0; i < depthLongDpp.length; i++) {
             depthLongDpp[i] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / (MapServer.TILE_SIZE * Math.pow(2, i));
         }
@@ -62,7 +62,7 @@ public class Rasterer {
     }
 
     private boolean validateParams(Map<String, Double> params) {
-       return params.get("lrlon") > MapServer.ROOT_ULLON
+        return params.get("lrlon") > MapServer.ROOT_ULLON
                && params.get("ullon") < MapServer.ROOT_LRLON
                && params.get("lrlat") < MapServer.ROOT_ULLAT
                && params.get("ullat") > MapServer.ROOT_LRLAT
@@ -85,9 +85,11 @@ public class Rasterer {
         double lonPerTile = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / Math.pow(2, (int) results.get("depth"));
         double latPerTile = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / Math.pow(2, (int) results.get("depth"));
         int leftIndex = (int) ((params.get("ullon") - MapServer.ROOT_ULLON) / lonPerTile);
-        int rightIndex = (int) Math.pow(2, (int) results.get("depth")) - 1 - (int) ((MapServer.ROOT_LRLON - params.get("lrlon")) / lonPerTile);
+        int rightIndex = (int) Math.pow(2, (int) results.get("depth")) - 1
+                - (int) ((MapServer.ROOT_LRLON - params.get("lrlon")) / lonPerTile);
         int upperIndex = (int) ((MapServer.ROOT_ULLAT - params.get("ullat")) / latPerTile);
-        int lowerIndex = (int) Math.pow(2, (int) results.get("depth")) - 1 - (int) ((params.get("lrlat") - MapServer.ROOT_LRLAT) / latPerTile);
+        int lowerIndex = (int) Math.pow(2, (int) results.get("depth")) - 1
+                - (int) ((params.get("lrlat") - MapServer.ROOT_LRLAT) / latPerTile);
         leftIndex = Math.max(leftIndex, 0);
         rightIndex = Math.min(rightIndex, (int) Math.pow(2, (int) results.get("depth")) - 1);
         upperIndex = Math.max(upperIndex, 0);
@@ -103,7 +105,13 @@ public class Rasterer {
 
         for (int i = 0; i < lowerIndex - upperIndex + 1; i++) {
             for (int j = 0; j < rightIndex - leftIndex + 1; j++) {
-                renderGrid[i][j] = "d" + String.valueOf(results.get("depth")) + "_x" + (leftIndex + j) + "_y" + (upperIndex + i) + ".png";
+                renderGrid[i][j] = "d"
+                        + String.valueOf(results.get("depth"))
+                        + "_x"
+                        + (leftIndex + j)
+                        + "_y"
+                        + (upperIndex + i)
+                        + ".png";
             }
         }
         results.put("render_grid", renderGrid);
