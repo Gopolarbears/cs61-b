@@ -17,7 +17,8 @@ public class Rasterer {
         // YOUR CODE HERE
         depthLongDpp = new double[DEPTHS];
         for (int i = 0; i < depthLongDpp.length; i++) {
-            depthLongDpp[i] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / (MapServer.TILE_SIZE * Math.pow(2, i));
+            depthLongDpp[i] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON)
+                    / (MapServer.TILE_SIZE * Math.pow(2, i));
         }
     }
 
@@ -82,8 +83,10 @@ public class Rasterer {
     }
 
     private void findImages(Map<String, Double> params, Map<String, Object> results) {
-        double lonPerTile = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / Math.pow(2, (int) results.get("depth"));
-        double latPerTile = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / Math.pow(2, (int) results.get("depth"));
+        double lonPerTile = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON)
+                / Math.pow(2, (int) results.get("depth"));
+        double latPerTile = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT)
+                / Math.pow(2, (int) results.get("depth"));
         int leftIndex = (int) ((params.get("ullon") - MapServer.ROOT_ULLON) / lonPerTile);
         int rightIndex = (int) Math.pow(2, (int) results.get("depth")) - 1
                 - (int) ((MapServer.ROOT_LRLON - params.get("lrlon")) / lonPerTile);
