@@ -41,21 +41,21 @@ public class Router {
         PriorityQueue<Long> pq = new PriorityQueue<>(
                 Comparator.comparingDouble(a -> distTo.get(a) + g.distance(a, destNode))
         );
-        Set<Long> visted = new HashSet<>();
+        Set<Long> visited = new HashSet<>();
         distTo.put(sNode, 0.0);
         pq.add(sNode);
 
         while (!pq.isEmpty()) {
             long node = pq.poll();
-            if (visted.contains(node)) {
+            if (visited.contains(node)) {
                 continue;
             }
-            visted.add(node);
+            visited.add(node);
             if (node == destNode) {
                 break;
             }
             for (long neighbor : g.adjacent(node)) {
-                if (visted.contains(neighbor)) {
+                if (visited.contains(neighbor)) {
                     continue;
                 }
                 if (!distTo.containsKey(neighbor)
@@ -68,6 +68,11 @@ public class Router {
         }
 
         LinkedList<Long> path = new LinkedList<>();
+
+        if (!edgeTo.containsKey(destNode) && destNode != sNode) {
+            return path;   // 返回空路径
+        }
+
         long curNode = destNode;
         while (curNode != sNode) {
             path.addFirst(curNode);
