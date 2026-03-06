@@ -3,10 +3,15 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -237,8 +242,8 @@ public class GraphDB {
             this.id = id;
         }
 
-        void addNode(Long id) {
-            nodes.add(id);
+        void addNode(Long nodeId) {
+            nodes.add(nodeId);
         }
     }
 }
