@@ -1,4 +1,3 @@
-import example.CSCourseDB;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -55,7 +54,9 @@ public class GraphDB {
         nodes.get(n2).adjs.add(n1);
     }
 
-    void addEdge(Edge e) {this.edges.put(Long.parseLong(e.id), e);}
+    void addEdge(Edge e) {
+        this.edges.put(Long.parseLong(e.id), e);
+    }
 
     void setNodeWayId(Long node, Long wayId) {
         nodes.get(node).wayIds.add(wayId);
@@ -236,6 +237,8 @@ public class GraphDB {
             this.id = id;
         }
 
-        void addNode(Long id) {nodes.add(id);}
+        void addNode(Long id) {
+            nodes.add(id);
+        }
     }
 }
